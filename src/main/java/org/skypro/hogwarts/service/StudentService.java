@@ -1,40 +1,43 @@
 package org.skypro.hogwarts.service;
 
 import org.skypro.hogwarts.model.Student;
+import org.skypro.hogwarts.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class StudentService {
-    HashMap<Long, Student> studentHashMap = new HashMap<>();
-    long lastId = 0;
+    private final StudentRepository repository;
+
+    @Autowired
+    public StudentService(StudentRepository repository) {
+        this.repository = repository;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        studentHashMap.put(lastId, student);
-        return student;
+        return this.repository.save(student);
     }
 
     public Student findStudent(long id) {
-        return studentHashMap.get(id);
+        return this.repository.getReferenceById(id);
     }
 
     public Student editStudent(Student student) {
-        studentHashMap.put(student.getId(), student);
-        return student;
+        return this.repository.save(student);
     }
 
     public Student deleteStudent(long id) {
-        return studentHashMap.remove(id);
+        Optional<Student> item = Optional.of(this.repository.getReferenceById(id));
+        item.ifPresent(faculty -> this.repository.deleteById(id));
+
+        return item.get();
     }
 
-    public Collection<Student> sortStudents(int age) {
-        return studentHashMap.values()
-                .stream()
-                .filter(student -> studentHashMap.containsValue(student.getAge()))
-                .collect(Collectors.toUnmodifiableList());
+    public Collection<Student> filterStudentsByAge(int age) {
+        return this.repository.findByAge(age);
     }
 }

@@ -1,12 +1,21 @@
 package org.skypro.hogwarts.model;
 
 import java.util.Objects;
+
+import jakarta.persistence.*;
 import org.springframework.stereotype.Service;
 
-@Service
+import javax.annotation.processing.Generated;
+
+@Entity
+@Table(name="students")
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
+
     private String name;
+
     private int age;
 
     public Student(Long id, String name, int age) {
