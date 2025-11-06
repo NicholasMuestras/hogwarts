@@ -1,22 +1,31 @@
 package org.skypro.hogwarts.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
-import jakarta.persistence.*;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.processing.Generated;
-
 @Entity
-@Table(name="students")
+@Table(name = "students")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  Long id;
+    private Long id;
 
     private String name;
 
     private int age;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id", nullable = false)
+    @JsonBackReference
+    @JsonIgnoreProperties({"students", "hibernateLazyInitializer", "handler"})
+    private Faculty faculty;
+
+    public Student() {
+    }
 
     public Student(Long id, String name, int age) {
         this.id = id;
@@ -46,6 +55,14 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Faculty getFaculty() {
+        return this.faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override

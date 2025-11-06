@@ -1,6 +1,7 @@
 package org.skypro.hogwarts.service;
 
 import org.skypro.hogwarts.model.Faculty;
+import org.skypro.hogwarts.model.Student;
 import org.skypro.hogwarts.repository.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,13 @@ public class FacultyService {
 
     public Collection<Faculty> filterFacultyByColor(String color) {
         return this.repository.findByColor(color);
+    }
+
+    public Collection<Faculty> filterFacultyByName(String name) {
+        return this.repository.findByNameIgnoreCase(name);
+    }
+
+    public Collection<Student> getStudentsByFaculty(long facultyId) {
+        return this.repository.getReferenceById(facultyId).getStudents();
     }
 }

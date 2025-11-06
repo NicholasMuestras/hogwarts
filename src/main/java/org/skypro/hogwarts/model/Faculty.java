@@ -1,11 +1,16 @@
 package org.skypro.hogwarts.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="faculties")
+@Table(name = "faculties")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,6 +19,14 @@ public class Faculty {
     private String name;
 
     private String color;
+
+    @OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JsonIgnoreProperties("faculty")
+    private List<Student> students = new ArrayList<>();
+
+    public Faculty() {
+    }
 
     public Faculty(Long id, String name, String color) {
         this.id = id;
@@ -43,6 +56,14 @@ public class Faculty {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public List<Student> getStudents() {
+        return this.students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     @Override
