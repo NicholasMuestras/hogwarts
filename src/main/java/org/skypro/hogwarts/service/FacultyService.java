@@ -1,42 +1,42 @@
 package org.skypro.hogwarts.service;
 
 import org.skypro.hogwarts.model.Faculty;
+import org.skypro.hogwarts.repository.FacultyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
+    private final FacultyRepository repository;
 
-    HashMap<Long, Faculty> facultyHashMap = new HashMap<>();
-    long lastId = 0;
-
-    public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        facultyHashMap.put(lastId, faculty);
-        return faculty;
+    @Autowired
+    public FacultyService(FacultyRepository repository) {
+        this.repository = repository;
     }
 
-    public Faculty findFaculty(long id) {
-        return facultyHashMap.get(id);
+    public Faculty createFaculty(Faculty faculty) {
+        return this.repository.save(faculty);
+    }
+
+    public Faculty findFaculty(Long id) {
+        return this.repository.getReferenceById(id);
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        facultyHashMap.put(faculty.getId(), faculty);
-        return faculty;
+        return this.repository.save(faculty);
     }
 
     public Faculty deleteFaculty(long id) {
-        return facultyHashMap.remove(id);
+        Optional<Faculty> item = Optional.of(this.repository.getReferenceById(id));
+        item.ifPresent(faculty -> this.repository.deleteById(id));
+
+        return item.get();
     }
 
-    public Collection<Faculty> sortFaculty(String color) {
-        return facultyHashMap
-                .values()
-                .stream()
-                .filter(faculty -> facultyHashMap.containsValue(color))
-                .collect(Collectors.toList());
+    public Collection<Faculty> filterFacultyByColor(String color) {
+        return this.repository.findByColor(color);
     }
 }

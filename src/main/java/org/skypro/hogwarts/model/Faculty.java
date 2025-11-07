@@ -1,10 +1,18 @@
 package org.skypro.hogwarts.model;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name="faculties")
 public class Faculty {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
+
     private String color;
 
     public Faculty(Long id, String name, String color) {

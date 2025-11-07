@@ -38,7 +38,7 @@ public class FacultyController {
     }
 
     @GetMapping("{color}")
-    public Collection<Faculty> sortFacultyByColor(@PathVariable String color) {
-        return facultyService.sortFaculty(color);
+    public Collection<Faculty> getFacultiesByColor(@PathVariable String color) {
+        return facultyService.filterFacultyByColor(color);
     }
 }
