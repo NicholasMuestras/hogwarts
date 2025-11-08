@@ -46,6 +46,12 @@ public class StudentService {
     }
 
     public Faculty getStudentFaculty(long studentId) {
-        return this.repository.getReferenceById(studentId).getFaculty();
+        Optional<Student> student = this.repository.findById(studentId);
+
+        if (student.isPresent()) {
+            return student.get().getFaculty();
+        }
+
+        return new Student().getFaculty();
     }
 }

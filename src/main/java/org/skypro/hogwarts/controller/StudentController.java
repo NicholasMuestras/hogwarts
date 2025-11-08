@@ -43,8 +43,8 @@ public class StudentController {
         return studentService.filterStudentsByAge(age);
     }
 
-    @GetMapping("{ageRange}")
-    public Collection<Student> filterStudentsByAgeRange(@PathVariable int from, @PathVariable int to) {
+    @GetMapping("/searchByAgeRange")
+    public Collection<Student> filterStudentsByAgeRange(int from, int to) {
         return studentService.filterStudentsByAgeRange(from, to);
     }
 
