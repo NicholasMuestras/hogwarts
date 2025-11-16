@@ -1,5 +1,6 @@
 package org.skypro.hogwarts.controller;
 
+import org.skypro.hogwarts.model.Faculty;
 import org.skypro.hogwarts.model.Student;
 import org.skypro.hogwarts.service.StudentService;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +41,15 @@ public class StudentController {
     @GetMapping("{age}")
     public Collection<Student> filterStudentsByAge(@PathVariable int age) {
         return studentService.filterStudentsByAge(age);
+    }
+
+    @GetMapping("/searchByAgeRange")
+    public Collection<Student> filterStudentsByAgeRange(int from, int to) {
+        return studentService.filterStudentsByAgeRange(from, to);
+    }
+
+    @GetMapping("/{studentId}/faculty")
+    public Faculty getStudentFaculty(@PathVariable long studentId) {
+        return studentService.getStudentFaculty(studentId);
     }
 }

@@ -1,9 +1,9 @@
 package org.skypro.hogwarts.service;
 
+import org.skypro.hogwarts.model.Faculty;
 import org.skypro.hogwarts.model.Student;
 import org.skypro.hogwarts.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -39,5 +39,19 @@ public class StudentService {
 
     public Collection<Student> filterStudentsByAge(int age) {
         return this.repository.findByAge(age);
+    }
+
+    public Collection<Student> filterStudentsByAgeRange(int ageFrom, int ageTo) {
+        return this.repository.findByAgeBetween(ageFrom, ageTo);
+    }
+
+    public Faculty getStudentFaculty(long studentId) {
+        Optional<Student> student = this.repository.findById(studentId);
+
+        if (student.isPresent()) {
+            return student.get().getFaculty();
+        }
+
+        return new Student().getFaculty();
     }
 }
