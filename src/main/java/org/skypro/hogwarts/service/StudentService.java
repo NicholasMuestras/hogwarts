@@ -54,4 +54,16 @@ public class StudentService {
 
         return new Student().getFaculty();
     }
+
+    public int getTotalCount() {
+        return this.repository.getTotalCount();
+    }
+
+    public byte getAverageAge() {
+        return this.repository.getAverageAge();
+    }
+
+    public Collection<Student> findLastN(int n) {
+        return this.repository.findLastN(n);
+    }
 }
