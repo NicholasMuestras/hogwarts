@@ -9,3 +9,7 @@ CREATE TABLE IF NOT EXISTS faculties (
 );
 
 CREATE INDEX IF NOT EXISTS idx_faculties_name ON faculties(name);
+
+-- changeset nobraztsov:2
+
+CREATE INDEX IF NOT EXISTS idx_faculties_name_color ON faculties(name, color);

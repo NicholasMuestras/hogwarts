@@ -16,3 +16,7 @@ CREATE TABLE IF NOT EXISTS students (
 
 CREATE INDEX IF NOT EXISTS idx_students_faculty_id ON students(faculty_id);
 CREATE INDEX IF NOT EXISTS idx_students_age ON students(age);
+
+-- changeset nobraztsov:2
+
+CREATE INDEX IF NOT EXISTS idx_students_name ON students(name);
