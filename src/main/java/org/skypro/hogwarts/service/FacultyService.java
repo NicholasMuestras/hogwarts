@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.LongStream;
 
 @Service
 public class FacultyService {
@@ -53,5 +54,25 @@ public class FacultyService {
         }
 
         return new Faculty().getStudents();
+    }
+
+    public String getLongestFacultyName() {
+        if (this.repository.count() > 0) {
+            return this.repository.findAll()
+                    .stream()
+                    .max((f1, f2) -> f1.getName().length() - f2.getName().length())
+                    .get()
+                    .getName();
+        }
+
+        return "";
+    }
+
+    public long getPaschalFeature() {
+        return LongStream
+                .iterate(1, a -> a + 1)
+                .limit(10_000_000)
+                .parallel()
+                .reduce(0, (a, b) -> a + b);
     }
 }

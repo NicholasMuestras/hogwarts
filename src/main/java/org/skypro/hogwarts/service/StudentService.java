@@ -1,5 +1,6 @@
 package org.skypro.hogwarts.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.skypro.hogwarts.model.Faculty;
 import org.skypro.hogwarts.model.Student;
 import org.skypro.hogwarts.repository.StudentRepository;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -92,5 +95,25 @@ public class StudentService {
         this.logger.debug("Trying to find {} last Students.", n);
 
         return this.repository.findLastN(n);
+    }
+
+    public Collection<Student> findStudentsWithNameStartsWithA() {
+        List<Student> students = this.repository.findAll();
+        return students.stream()
+                .filter(student -> student.getName().startsWith("A") || student.getName().startsWith("a"))
+                .peek(student -> student.setName(StringUtils.capitalize(student.getName())))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public byte getAverageAgeOfStudentsUsingStream() {
+        if (this.repository.getTotalCount() > 0) {
+            return (byte) this.repository.findAll().stream()
+                    .mapToInt(Student::getAge)
+                    .average()
+                    .getAsDouble();
+        }
+
+        return 0;
     }
 }
