@@ -19,6 +19,8 @@ public class StudentService {
     private final StudentRepository repository;
     private final Logger logger;
 
+    Integer counter;
+
     @Autowired
     public StudentService(StudentRepository repository) {
         this.repository = repository;
@@ -115,5 +117,45 @@ public class StudentService {
         }
 
         return 0;
+    }
+
+    public void printStudentsParallelToConsole() {
+        List<Student> students = this.repository.findAll();
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+    }
+
+    public void printStudentsSynchronizedToConsole() {
+        List<Student> students = this.repository.findAll();
+        this.counter = 0;
+
+        printStudentNameToConsole(students);
+        printStudentNameToConsole(students);
+
+        new Thread(() -> {
+            printStudentNameToConsole(students);
+            printStudentNameToConsole(students);
+        }).start();
+
+        new Thread(() -> {
+            printStudentNameToConsole(students);
+            printStudentNameToConsole(students);
+        }).start();
+    }
+
+    private synchronized void printStudentNameToConsole(List<Student> student) {
+        System.out.println(this.counter + " " + student.get(this.counter).getName());
+        this.counter++;
     }
 }

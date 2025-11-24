@@ -5,6 +5,7 @@ import org.skypro.hogwarts.model.Faculty;
 import org.skypro.hogwarts.model.Student;
 import org.skypro.hogwarts.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -92,5 +93,19 @@ public class StudentController {
         o.put("averageAge", studentService.getAverageAgeOfStudentsUsingStream());
 
         return o;
+    }
+
+    @GetMapping("/print-parallel")
+    public ResponseEntity<?> printParallel() {
+        studentService.printStudentsParallelToConsole();
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<?> printSynchronized() {
+        studentService.printStudentsSynchronizedToConsole();
+
+        return ResponseEntity.ok().build();
     }
 }
