@@ -80,4 +80,17 @@ public class StudentController {
     public Collection<Student> lastFive() {
         return studentService.findLastN(5);
     }
+
+    @GetMapping("/studentsWithNameStartsWithA")
+    public Collection<Student> findStudentsWithNameStartsWithA() {
+        return studentService.findStudentsWithNameStartsWithA();
+    }
+
+    @GetMapping("/averageAgeUsingStream")
+    public Map<String, Byte> getAverageAgeOfStudents() {
+        Map<String, Byte> o = new HashMap<>(1);
+        o.put("averageAge", studentService.getAverageAgeOfStudentsUsingStream());
+
+        return o;
+    }
 }

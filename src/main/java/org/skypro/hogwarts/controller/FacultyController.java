@@ -6,6 +6,8 @@ import org.skypro.hogwarts.service.FacultyService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/faculty")
@@ -51,5 +53,21 @@ public class FacultyController {
     @GetMapping("/{facultyId}/students")
     public Collection<Student> getStudentsByFaculty(@PathVariable long facultyId) {
         return facultyService.getStudentsByFaculty(facultyId);
+    }
+
+    @GetMapping("/longestFacultyName")
+    public Map<String, String> getLongestFacultyName() {
+        Map<String, String> o = new HashMap<>(1);
+        o.put("longestFacultyName", facultyService.getLongestFacultyName());
+
+        return o;
+    }
+
+    @GetMapping("/paschalFeature")
+    public Map<String, Long> getPaschalFeature() {
+        Map<String, Long> o = new HashMap<>(1);
+        o.put("paschalFeature", facultyService.getPaschalFeature());
+
+        return o;
     }
 }
